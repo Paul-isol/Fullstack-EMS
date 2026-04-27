@@ -144,8 +144,11 @@ const LoginForm = ({ role, title, subTitle }) => {
                   strokeWidth={2.5}
                 />
                 {isSubmitting && (
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-5 h-5 border-2 border-white/20 border-t-white animate-spin" />
+                  <div className="absolute inset-0 flex items-center justify-center bg-slate-900 group-hover:bg-black">
+                    <div className="relative flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full border border-white/10" />
+                      <div className="absolute inset-0 rounded-full border border-transparent border-t-white animate-[spin_0.8s_cubic-bezier(0.4,0,0.2,1)_infinite]" />
+                    </div>
                   </div>
                 )}
               </button>
