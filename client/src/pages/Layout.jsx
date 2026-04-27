@@ -1,14 +1,20 @@
 import { Outlet } from "react-router-dom"
+import Sidebar from "../components/Sidebar"
 
 const Layout = () => {
   return (
-    <div className="flex h-screen bg-linear-to-br from-slate-50 via-white to-indigo-50/30">
-        <p>sidebar</p>
-        <main className="flex-1 overflow-y-auto">
-            <div className="p-4 pt-16 sm:p-6 sm:pt-6 lg:p-8 max-w-400 mx-auto">
-                <Outlet />
-            </div>
-        </main>
+    <div className="flex h-screen bg-[#fafbfc]">
+      <Sidebar />
+      <main className="flex-1 md:pl-64 overflow-y-auto">
+        {/* Mobile Header Spacer */}
+        <div className="md:hidden h-16 w-full" />
+        
+        <div className="p-6 sm:p-10 lg:p-12 min-h-screen">
+          <div className="max-w-7xl mx-auto">
+            <Outlet />
+          </div>
+        </div>
+      </main>
     </div>
   )
 }
