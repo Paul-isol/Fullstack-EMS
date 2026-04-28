@@ -1,142 +1,117 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=Outfit:wght@100..900&display=swap");
 @import "tailwindcss";
 
-* {
-  font-family: "Outfit", "Inter";
+:root {
+  --bg-primary: #fafbfc;
+  --surface: #ffffff;
+  --border-neutral: #f1f5f9; /* slate-100 */
+  --border-active: #0f172a; /* slate-900 */
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: #475569; /* slate-600 */
+  font-family: "Outfit", "Inter", sans-serif;
+  @apply selection:bg-indigo-100 selection:text-indigo-900;
 }
 
 @layer utilities {
-
-  /* Card styles */
-  .card {
-    @apply bg-white rounded-lg border border-slate-200/70;
+  /* Secured Terminal Base */
+  .terminal-card {
+    @apply bg-white border border-slate-100 rounded-none transition-all duration-300;
   }
 
-  .card-hover {
-    @apply hover:-translate-y-0.5 transition-all duration-300;
+  .terminal-card-hover {
+    @apply hover:border-slate-900 hover:shadow-[10px_10px_40px_-15px_rgba(0,0,0,0.05)] transition-all duration-300;
   }
 
-  /* Button styles */
-  .btn-primary {
-    @apply bg-linear-to-r from-indigo-600 to-indigo-500 text-white px-5 py-2.5 rounded-md text-sm hover:from-indigo-700 hover:to-indigo-600 transition-all duration-200 shadow-md shadow-indigo-500/25 active:scale-[0.98];
+  .font-mono {
+    font-family: "Fira Code", monospace;
   }
 
-  .btn-secondary {
-    @apply bg-white text-slate-700 border border-slate-200 px-5 py-2.5 rounded-md text-sm hover:bg-slate-50 hover:border-slate-300 transition-all duration-200;
+  .label-technical {
+    @apply font-mono text-[10px] tracking-[0.2em] uppercase text-slate-400;
   }
 
-  /* Input, Select, Textarea styles */
+  /* Button styles - Secured Terminal */
+  .btn-terminal {
+    @apply px-6 py-3 rounded-none font-mono text-[11px] tracking-widest uppercase transition-all duration-200 active:scale-95 flex items-center justify-center gap-2;
+  }
+
+  .btn-terminal-primary {
+    @apply bg-slate-900 text-white hover:bg-black;
+  }
+
+  .btn-terminal-secondary {
+    @apply bg-white border border-slate-200 text-slate-900 hover:border-slate-900;
+  }
+
+  .btn-terminal-emerald {
+    @apply bg-emerald-600 text-white hover:bg-emerald-700;
+  }
+
+  .btn-terminal-amber {
+    @apply bg-amber-600 text-white hover:bg-amber-700;
+  }
+
+  /* Input & Select - Secured Terminal */
   input,
   select,
   textarea {
-    @apply w-full px-4 py-2.5 bg-slate-50/50 border border-slate-200 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-400 transition-all duration-200 text-sm placeholder:text-slate-400;
+    @apply w-full px-4 py-3 bg-white border border-slate-100 rounded-none focus:outline-none focus:border-slate-900 transition-all duration-200 font-mono text-[13px] placeholder:text-slate-300;
   }
 
-  /* Table styles */
-  .table-modern {
-    @apply w-full text-left text-sm;
+  /* Badge Styles - Secured Terminal */
+  .terminal-badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-none text-[9px] font-mono tracking-widest uppercase border;
   }
 
-  .table-modern thead {
-    @apply text-xs font-semibold text-slate-500 uppercase tracking-wider;
+  .badge-emerald {
+    @apply bg-emerald-50/50 text-emerald-600 border-emerald-100;
   }
 
-  .table-modern thead th {
-    @apply px-6 py-4 bg-slate-50/80;
+  .badge-amber {
+    @apply bg-amber-50/50 text-amber-600 border-amber-100;
   }
 
-  .table-modern tbody {
-    @apply divide-y divide-slate-100;
+  .badge-indigo {
+    @apply bg-indigo-50/50 text-indigo-600 border-indigo-100;
   }
 
-  .table-modern tbody tr {
-    @apply hover:bg-slate-50/50 transition-colors duration-150;
-  }
-
-  .table-modern tbody td {
-    @apply px-6 py-4;
-  }
-
-  /* Badge styles */
-  .badge {
-    @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs;
-  }
-
-  .badge-success {
-    @apply bg-emerald-50 text-emerald-700 ring-1 ring-emerald-600/10;
-  }
-
-  .badge-warning {
-    @apply bg-amber-50 text-amber-700 ring-1 ring-amber-600/10;
-  }
-
-  .badge-danger {
-    @apply bg-rose-50 text-rose-700 ring-1 ring-rose-600/10;
-  }
-
-  /* Page header */
-  .page-header {
-    @apply mb-8;
-  }
-
-  .page-title {
-    @apply text-2xl font-medium text-slate-900 tracking-tight;
-  }
-
-  .page-subtitle {
-    @apply text-slate-500 text-sm mt-1;
+  .badge-slate {
+    @apply bg-slate-50 text-slate-500 border-slate-200;
   }
 
   /* Animations */
   .animate-fade-in {
-    animation: fadeIn 0.4s ease-out;
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .animate-slide-up {
-    animation: slideUp 0.4s ease-out;
+  .animate-terminal-pulse {
+    animation: terminalPulse 2s infinite;
   }
 }
 
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+@keyframes terminalPulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.4; }
+  100% { opacity: 1; }
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Secured Terminal */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-transparent;
+  background: var(--bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-slate-400;
-}
-
-/* Selection */
-::selection {
-  @apply bg-indigo-100 text-indigo-900;
+  @apply bg-slate-200 hover:bg-slate-300;
 }
