@@ -91,7 +91,7 @@ const PayslipList = ({ payslips, isAdmin }) => {
                   </td>
                   <td className="px-8 py-6 text-right">
                     <button 
-                      onClick={() => window.open(`/print/payslips/${payslip.id || payslip._id}`, "_blank")}
+                      onClick={() => window.open(`/print/payslip/${payslip.id || payslip._id}`)}
                       className="btn-terminal btn-terminal-secondary py-1.5 px-4 h-auto inline-flex group/btn"
                     >
                       <Download size={12} className="group-hover/btn:translate-y-0.5 transition-transform" />
