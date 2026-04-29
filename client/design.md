@@ -51,6 +51,13 @@ Inputs and filters are grouped in a technical console style:
 - **Backdrop**: Advanced glassmorphism (`backdrop-blur-xl`) with soft, high-quality overlays and radial gradients.
 - **Status**: Progress messages in pulsing mono-spaced text with tracking-heavy alignment.
 
+### Responsive Modal Architecture
+To prevent vertical overflow and ensure terminal access across all devices:
+- **Constraint**: Modal containers must use `max-h-[90vh]` or `max-h-[95vh]`.
+- **Scrolling**: Implement `overflow-y-auto` on the primary content area (form/list) within the modal.
+- **Layout**: Use `flex flex-col` on the modal card to keep headers and footers stable while content scrolls.
+- **Spacing**: Apply `p-4` or `p-6` mobile padding to avoid edge clipping on small viewports.
+
 ---
 
 ## 3. Interaction Design
