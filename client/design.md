@@ -47,9 +47,9 @@ Inputs and filters are grouped in a technical console style:
 - **Icons**: Minimalist `lucide-react` icons (12px-14px) with custom chevrons.
 
 ### Premium Loading System
-- **Spinner**: Dual-ring round design with contrasting rotation speeds.
-- **Backdrop**: Glassmorphism (`backdrop-blur-md`) with soft overlays.
-- **Status**: Progress messages in pulsing mono-spaced text.
+- **Spinner**: Smooth, multi-layered rounded design with varying rotation speeds and subtle glows. This component is the ONLY exception to the `rounded-none` rule, using perfect circles to communicate fluidity and premium system processing.
+- **Backdrop**: Advanced glassmorphism (`backdrop-blur-xl`) with soft, high-quality overlays and radial gradients.
+- **Status**: Progress messages in pulsing mono-spaced text with tracking-heavy alignment.
 
 ---
 

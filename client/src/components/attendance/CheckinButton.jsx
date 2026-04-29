@@ -80,8 +80,13 @@ const CheckinButton = ({ todayRecord, onAction }) => {
       >
         {loading ? (
           <div className="flex flex-col items-center gap-3">
-            <div className="w-6 h-6 border-2 border-slate-200 border-t-slate-900 animate-spin" />
-            <span className="label-technical text-slate-900 animate-terminal-pulse">Processing...</span>
+            <div className="relative flex items-center justify-center">
+              {/* Premium Spinner for Button */}
+              <div className="w-10 h-10 rounded-full border-[1px] border-slate-100" />
+              <div className="absolute inset-0 rounded-full border-[1.5px] border-transparent border-t-slate-900 animate-spin" />
+              <div className="absolute w-6 h-6 rounded-full border-[1px] border-transparent border-b-slate-400 animate-[spin_1.5s_linear_infinite_reverse]" />
+            </div>
+            <span className="label-technical text-slate-900 animate-terminal-pulse mt-2">Processing...</span>
           </div>
         ) : (
           <>
