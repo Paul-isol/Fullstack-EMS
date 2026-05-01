@@ -8,6 +8,7 @@ import authRouter from "./routes/authRoutes.js"
 import employeeRouter from "./routes/EmployeeRoutes.js"
 import profileRouter from "./routes/profileRoutes.js"
 import attendanceRouter from "./routes/attendanceRoutes.js"
+import leaveAppRouter from "./routes/leaveApplicationRoutes.js"
 
 const app = express()
 const PORT = process.env.PORT || 8000
@@ -27,9 +28,10 @@ app.use("/api/auth", authRouter);
 app.use("/api/employee", employeeRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/attendance", attendanceRouter);
+app.use("/api/leave", leaveAppRouter);
 
-await connectDB()
+await connectDB();
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port http://localhost:${PORT}`)
+    console.log(`Server is running on port http://localhost:${PORT}`);
 })
