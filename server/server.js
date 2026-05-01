@@ -33,6 +33,7 @@ app.use("/api/attendance", attendanceRouter);
 app.use("/api/leave", leaveAppRouter);
 app.use("/api/payslips", payslipRouter);
 app.use("/api/dashboard", dashboardRouter);
+
 await connectDB();
 
 app.listen(PORT, () => {
