@@ -12,7 +12,7 @@ import leaveAppRouter from "./routes/leaveApplicationRoutes.js"
 import payslipRouter from "./routes/payslipRoutes.js"
 import dashboardRouter from "./routes/dashboardRotes.js"
 import { serve } from "inngest/express";
-import { inngest, functions } from "./inngest/index.js"
+import { inngest, functions } from "./inngest/index.js";
 
 
 const app = express()
@@ -29,8 +29,6 @@ app.get("/", (req, res) => {
     res.send("Backend is running...")
 })
 
-app.use("/api/inngest", serve({ client: inngest, functions }));
-
 app.use("/api/auth", authRouter);
 app.use("/api/employee", employeeRouter);
 app.use("/api/profile", profileRouter);
@@ -38,6 +36,7 @@ app.use("/api/attendance", attendanceRouter);
 app.use("/api/leave", leaveAppRouter);
 app.use("/api/payslips", payslipRouter);
 app.use("/api/dashboard", dashboardRouter);
+app.use("/api/inngest", serve({ client: inngest, functions }));
 
 await connectDB();
 
