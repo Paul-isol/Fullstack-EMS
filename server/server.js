@@ -11,6 +11,9 @@ import attendanceRouter from "./routes/attendanceRoutes.js"
 import leaveAppRouter from "./routes/leaveApplicationRoutes.js"
 import payslipRouter from "./routes/payslipRoutes.js"
 import dashboardRouter from "./routes/dashboardRotes.js"
+import { serve } from "inngest/express";
+import { inngest, functions } from "./inngest/index.js"
+
 
 const app = express()
 const PORT = process.env.PORT || 8000
@@ -25,6 +28,8 @@ app.use(multer().none())
 app.get("/", (req, res) => {
     res.send("Backend is running...")
 })
+
+app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.use("/api/auth", authRouter);
 app.use("/api/employee", employeeRouter);

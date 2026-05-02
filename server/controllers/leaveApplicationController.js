@@ -27,6 +27,13 @@ export const createLeaveApplication = async(req,res) => {
             status:"PENDING"
         });
 
+        await inngest.send({
+            name: "leave/pending",
+            data: {
+                leaveApplicationId: leave._id.toString()
+            }
+        });
+
         return res.status(201).json({ success: true, data: leave});
     }catch(err){
         return res.status(500).json({error: "Failed to create leave application"});
