@@ -1,6 +1,6 @@
 import Attendance from "../models/Attendance.js";
 import Employee from "../models/Employee.js";
-import {inngest} from "../inngest/index.js";
+import { inngest } from "../inngest/index.js";
 
 // clockin/out for employees
 // POST /api/attendance
@@ -31,8 +31,8 @@ export const clockInOut = async (req, res) => {
             await inngest.send({
                 name: "employee/check-out",
                 data: {
-                    employeeId: employee._id,
-                    attendanceId: attendance._id,
+                    employeeId: employee._id.toString(),
+                    attendanceId: attendance._id.toString(),
                 }
             })
             return res.status(201).json({ success: true, type: "CHECK_IN", data: attendance });

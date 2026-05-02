@@ -45,7 +45,7 @@ const autoCheckOut = inngest.createFunction(
         await step.sleepUntil("wait-for-9-hours", new Date(new Date().getTime() + 9 * 60 * 60 * 1000));
 
         // get attendance data
-        const attendance = await Attendance.findById(attendanceId);
+        let attendance = await Attendance.findById(attendanceId);
 
         if (!attendance?.checkOut) {
             const employee = await Employee.findById(employeeId);
