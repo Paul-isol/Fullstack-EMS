@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
+import "dotenv/config"
 // login for admin and employee
 // POST api/auth/login
 export const login = async (req, res) => {
@@ -39,7 +40,7 @@ export const login = async (req, res) => {
         res.cookie("token", token, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
             maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
         });
         return res.json({ user: payload });
@@ -87,7 +88,11 @@ export const changePassword = async (req, res) => {
 // POST /api/auth/logout
 export const logout = async (req, res) => {
     try {
-        res.clearCookie("token");
+        res.clearCookie("token", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+        });
         return res.json({ message: "Logout successful" });
     } catch (error) {
         console.error("logout failed: ", error);
