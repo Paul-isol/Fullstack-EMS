@@ -6,7 +6,7 @@ import { inngest } from "../inngest/index.js";
 export const createLeaveApplication = async(req,res) => {
     try{
         const session = req.session;
-        const employee = await Employee.findById(session.userId);
+        const employee = await Employee.findOne({userId: session.userId});
         if(!employee) return res.status(404).json({message:"Employee not found"});
         if(employee.isDeleted) return res.status(403).json({error: "Your account has been deactivated"})
 
@@ -49,19 +49,22 @@ export const getLeaveApplications = async(req,res) => {
         if(isAdmin){
             const status = req.query.status;
             const where = status ? {status} : {};
-            const leaves = (await LeaveApplication.find(where).populate("employeeId")).sort({createdAt: -1});
+            const leaves = await LeaveApplication.find(where)
+                .populate("employeeId")
+                .sort({createdAt: -1});
+
             const data = leaves.map((leave) => {
                 const obj = leave.toObject();
                 return {
                     ...obj,
                     id: obj._id.toString(),
                     employee: obj.employeeId,
-                    employeeId: obj.employeeId._id?.toString(),
+                    employeeId: obj.employeeId?._id?.toString(),
                 }
             })
             return res.status(200).json({success: true, data: data});
         } else {
-            const employee = await Employee.findById(session.userId);
+            const employee = await Employee.findOne({ userId: session.userId });
 
             if(!employee) return res.status(404).json({message:"Employee not found"});
 
@@ -88,7 +91,7 @@ export const updateLeaveApplication = async(req,res) => {
         const leave = await LeaveApplication.findByIdAndUpdate(req.params.id, {status}, {returnDocument: "after"});
         if(!leave) return res.status(404).json({message:"Leave application not found"});
 
-        return res.status(200).json({success: true, data: leave});
+        return res.status(200).json({success: true, data: leave, message: `Leave application ${status.toLowerCase()} successfully!`});
     }catch(err){
         return res.status(500).json({error: "Failed to update leave application"});
     }

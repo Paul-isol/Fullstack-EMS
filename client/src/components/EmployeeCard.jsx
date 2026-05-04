@@ -1,9 +1,16 @@
 import { MoreVertical, Mail, Phone } from "lucide-react";
-
+import api from "../api/axios";
+import toast from "react-hot-toast";
 const EmployeeCard = ({ emp, onDelete, onEdit }) => {
   const handleDelete = async () => {
     if (confirm("Are you sure you want to delete this record?")) {
-      onDelete(emp._id);
+      try {
+        await api.delete(`/employees/${emp._id}`);
+        toast.success("Employee deleted");
+        onDelete(emp._id);
+      } catch (error) {
+        toast.error(error.response.data.error || "Failed to delete employee");
+      }
     }
   };
   return (
@@ -15,6 +22,12 @@ const EmployeeCard = ({ emp, onDelete, onEdit }) => {
       <div
         className={`absolute top-0 right-0 w-12 h-1 ${emp.employmentStatus === "ACTIVE" ? "bg-emerald-500" : "bg-slate-200"}`}
       />
+
+      {emp.isDeleted && (
+        <div className="absolute top-0 right-0 px-2 py-1 bg-rose-50 text-rose-600 text-[8px] font-mono tracking-[0.2em] uppercase border-l border-b border-rose-100 z-10">
+          Deleted
+        </div>
+      )}
 
       <div className="p-6">
         <div className="flex justify-between items-start mb-4">

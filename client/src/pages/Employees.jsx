@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { dummyEmployeeData, DEPARTMENTS } from "../assets/assets";
+import { DEPARTMENTS } from "../assets/assets";
 import { Search, Plus, Filter, ChevronDown, X } from "lucide-react";
 import Loading from "../components/Loading";
 import EmployeeCard from "../components/EmployeeCard";
 import EmployeeForm from "../components/EmployeeForm";
-
+import api from "../api/axios";
+import toast from "react-hot-toast";
 const Employees = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -16,15 +17,19 @@ const Employees = () => {
   const fetchEmployees = useCallback(async () => {
     setLoading(true);
     // Simulate API call
-    setTimeout(() => {
-      setEmployees(
-        dummyEmployeeData.filter((emp) =>
-          selectedDepartment ? emp.department === selectedDepartment : emp,
-        ),
-      );
+    try {
+      const url = selectedDepartment
+        ? `/employees?department=${selectedDepartment}`
+        : `/employees`;
+      const res = await api.get(url);
+      setEmployees(res.data);
+    } catch (error) {
+      console.error("Error fetching employees", error);
+      toast.error("Failed to fetch employees");
+    } finally {
       setLoading(false);
-    }, 800);
-  }, []);
+    }
+  }, [selectedDepartment]);
 
   useEffect(() => {
     fetchEmployees();

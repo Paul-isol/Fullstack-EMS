@@ -1,20 +1,41 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate, Navigate} from "react-router-dom";
 import { ChevronLeft, Mail, Lock, Eye, EyeOff, ArrowRight, ShieldCheck } from "lucide-react";
 import LoginLeftSide from "./LoginLeftSide";
+import { useAuth } from "../context/AuthContext";
+import toast from "react-hot-toast";
+import Loading from "./Loading";
 
 const LoginForm = ({ role, title, subTitle }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const {login,user,loading} = useAuth()
+  const navigate = useNavigate()
+
+  if(loading){
+    return <Loading />
+  }
+  if(user){
+    return <Navigate to={"/dashboard"}/>
+  }
 
   const isRoleAdmin = role === "admin";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => setIsSubmitting(false), 1500);
+    setError("");
+    try {
+      await login(formData.email, formData.password, role);
+      navigate("/dashboard")
+    } catch (error) {
+      toast.error(error.response?.data?.error || error.message || "Login Crashed");
+      setError(error.response?.data?.message || error.message || "Login Failed");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

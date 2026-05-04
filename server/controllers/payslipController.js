@@ -1,5 +1,5 @@
-import Payslip from "../models/Paysip.js";
-
+import Payslip from "../models/Payslip.js";
+import Employee from "../models/Employee.js";
 
 // create payslip
 // POST /api/payslip
@@ -48,7 +48,7 @@ export const getPayslips = async(req,res) => {
             })
             return res.status(200).json({success: true, data: data});   
         } else {
-            const employee = await Employee.findById(session.userId);
+            const employee = await Employee.findOne({userId: session.userId});
             if(!employee) return res.status(404).json({message:"Employee not found"});
             
             const payslips = await Payslip.find({employeeId: employee._id}).sort({createdAt: -1});

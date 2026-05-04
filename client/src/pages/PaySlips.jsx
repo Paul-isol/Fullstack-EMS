@@ -4,6 +4,9 @@ import Loading from "../components/Loading"
 import PayslipList from "../components/payslip/PayslipList"
 import { ShieldCheck, Plus, FileText, Database } from "lucide-react"
 import GenerateNewPayslipForm from "../components/payslip/GenerateNewPayslipForm"
+import { useAuth } from "../context/AuthContext"
+import api from "../api/axios"
+import toast from "react-hot-toast"
 
 const PaySlips = () => {
   const [payslips, setPayslips] = useState([])
@@ -11,17 +14,22 @@ const PaySlips = () => {
   const [showPayslipModel, setShowPayslipModel] = useState(false)
   const [loading, setLoading] = useState(true)
   
-  // Mocking isAdmin for design purposes
-  const isAdmin = true
+  const {user} = useAuth()
+  const isAdmin = user?.role === "ADMIN"
 
   const fetchPayslips = useCallback(async () => {
     // Simulate API delay
     setLoading(true)
-    setShowPayslipModel(false)
-    setTimeout(() => {
-      setPayslips(dummyPayslipData)
+    try {
+      const res = await api.get("/payslips")
+      setPayslips(res.data.data || [])
+    } catch (err) {
+      console.log(err)
+      toast.error(err.response.data.error || "Failed to fetch payslips")
+      setPayslips([])
+    } finally {
       setLoading(false)
-    }, 800)
+    }
   }, [])
   
   useEffect(() => {
@@ -29,7 +37,7 @@ const PaySlips = () => {
   }, [fetchPayslips])
   
   useEffect(() => {
-    if (isAdmin) setEmployees(dummyEmployeeData)
+    if (isAdmin) api.get("/employees").then(res => setEmployees(res.data.filter(emp => emp.isDeleted === false) || []))
   }, [isAdmin])
 
   if (loading) return <Loading />

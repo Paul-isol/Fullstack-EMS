@@ -1,5 +1,8 @@
 import { X, User, DollarSign, Calendar, Terminal, ShieldCheck, Plus } from "lucide-react";
 import { useState, useMemo } from "react";
+import api from "../../api/axios";
+import toast from "react-hot-toast";
+
 
 const GenerateNewPayslipForm = ({ open, onClose, onSuccess, employees }) => {
   const [loading, setLoading] = useState(false);
@@ -30,6 +33,16 @@ const GenerateNewPayslipForm = ({ open, onClose, onSuccess, employees }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    try {
+      await api.post("/payslips", formData);
+      toast.success("Payslip generated successfully");
+      onSuccess?.();
+      onClose?.();
+    } catch (err) {
+      toast.error(err.response.data.error || "Failed to generate payslip");
+    } finally {
+      setLoading(false);
+    }
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
@@ -166,27 +179,6 @@ const GenerateNewPayslipForm = ({ open, onClose, onSuccess, employees }) => {
                 value={formData.deductions}
                 onChange={(e) => setFormData({ ...formData, deductions: e.target.value })}
               />
-            </div>
-          </div>
-
-          {/* Live Calculation Console */}
-          <div className="terminal-card bg-slate-900 p-6 flex items-center justify-between overflow-hidden relative group">
-            <DollarSign size={120} className="absolute -right-8 -bottom-8 text-white/5 group-hover:text-white/10 transition-colors" />
-            <div className="relative z-10">
-              <span className="label-technical text-slate-400 block mb-1">TOTAL_NET_DISBURSEMENT</span>
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-light text-white tracking-tighter font-mono italic">
-                  ${netSalary}
-                </span>
-                <span className="label-technical text-emerald-500 text-[9px] animate-pulse">LIVE_CALC</span>
-              </div>
-            </div>
-            <div className="relative z-10 text-right hidden md:block border-l border-white/10 pl-8">
-              <span className="label-technical text-slate-500 block mb-1">VERIFICATION_STATUS</span>
-              <div className="flex items-center gap-2 text-emerald-500">
-                <ShieldCheck size={14} />
-                <span className="label-technical text-[9px]">ENCRYPTED_FLOW</span>
-              </div>
             </div>
           </div>
 

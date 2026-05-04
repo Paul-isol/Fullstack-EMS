@@ -1,7 +1,8 @@
 import { LogIn, LogOut, Clock, Terminal } from "lucide-react";
 import { useState, useEffect } from "react";
 import { format } from "date-fns";
-
+import api from "../../api/axios.js";
+import toast from "react-hot-toast";
 const CheckinButton = ({ todayRecord, onAction }) => {
   const [loading, setLoading] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -13,13 +14,16 @@ const CheckinButton = ({ todayRecord, onAction }) => {
 
   const handleAttendance = async () => {
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      onAction();
-    }, 1200); // Slightly longer for "Terminal Processing" feel
+    try {
+      await api.post("/attendance")
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Failed to record attendance")
+    } finally {
+      setLoading(false)
+    }
   };
 
-  const isCheckedIn = !!todayRecord?.isCheckedIn;
+  const isCheckedIn = !!todayRecord?.checkIn;
   const isCompleted = !!todayRecord?.checkOut;
 
   if (isCompleted) {

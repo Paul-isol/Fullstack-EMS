@@ -1,5 +1,6 @@
 import { X, Lock, Key, ShieldCheck, ShieldAlert, Terminal } from "lucide-react";
 import { useState } from "react";
+import api from "../api/axios"
 
 const ChangePasswordModel = ({ open, onClose }) => {
   const [loading, setLoading] = useState(false);
@@ -24,13 +25,24 @@ const ChangePasswordModel = ({ open, onClose }) => {
       return;
     }
 
-    // Simulate API rotation
-    setTimeout(() => {
+    const currentPassword = passwords.oldPassword;
+    const newPassword = passwords.newPassword;
+    
+    try {
+      const {data} = await api.post("/auth/change-password",{currentPassword, newPassword});
+      // handle error and response
+      if(!data.success){
+        setMessage({type: "error", text:data.message || "Unknown error occurred"})
+      }else{
+        setMessage({type: "success", text:data.message || "Password changed successfully"})
+        setPasswords({oldPassword: "", newPassword: "", confirmPassword: ""})
+        onClose();
+      }
+    } catch(err){
+      setMessage({type: "error", text:err.response?.data?.message || "Unknown error occurred"})
+    } finally{
       setLoading(false);
-      setMessage({ type: "success", text: "Credential rotation completed. Security keys synchronized." });
-      // Clear after success
-      setPasswords({ oldPassword: "", newPassword: "", confirmPassword: "" });
-    }, 1500);
+    }
   };
 
   if (!open) return null;

@@ -2,6 +2,7 @@ import { DEPARTMENTS } from "../constants/departments.js";
 import Attendance from "../models/Attendance.js";
 import Employee from "../models/Employee.js";
 import LeaveApplication from "../models/LeaveApplication.js";
+import Payslip from "../models/Payslip.js";
 
 //get dashboard for employee and admin
 // GET /api/dashboard
@@ -32,7 +33,7 @@ export const getDashboard = async(req,res) => {
                 totalDepartments: DEPARTMENTS.length
             })
         } else {
-            const employee = await Employee.findById(session.userId);
+            const employee = await Employee.findOne({userId: session.userId});
             if(!employee) return res.status(404).json({message: "Employee not found"});
 
             const today = new Date();

@@ -183,7 +183,7 @@ const attendanceReminder = inngest.createFunction(
                 return Promise.all(emailPromises);
             })
         }
-
+        await Promise.all(emailPromises)
         return { totalActive: activeEmployees.length, onLeave: onLeaveIds.length, checkedIn: checkedInIds.length, totalAbsent: absentEmployees.length }
 
 

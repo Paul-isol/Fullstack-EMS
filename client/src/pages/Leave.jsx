@@ -4,22 +4,31 @@ import Loading from "../components/Loading"
 import { Palmtree, Thermometer, Umbrella, Plus, ShieldCheck, ArrowUpRight } from "lucide-react"
 import LeaveHistory from "../components/leave/LeaveHistory"
 import ApplyLeaveModel from "../components/leave/ApplyLeaveModel"
+import { useAuth } from "../context/AuthContext"
+import toast from "react-hot-toast"
+import api from "../api/axios.js"
+
 
 const Leave = () => {
+  const {user} = useAuth()
   const [leaves, setLeaves] = useState([])
   const [loading, setLoading] = useState(true)
   const [showModel, setShowModel] = useState(false)
   const [isDeleted, setIsDeleted] = useState(false)
 
   // Mocking isAdmin for design purposes (could be passed as prop or from context)
-  const isAdmin = false 
+  const isAdmin = user?.role === "ADMIN"; 
 
   const fetchLeaveData = useCallback(async () => {
     setLoading(true)
-    setTimeout(() => {
-      setLeaves(dummyLeaveData)
+    try {
+      const response = await api.get("/leave")
+      setLeaves(response.data.data)
+    } catch (error) {
+      toast.error(error.response.data.error)
+    } finally {
       setLoading(false)
-    }, 800)
+    }
   }, [])
 
   useEffect(() => {

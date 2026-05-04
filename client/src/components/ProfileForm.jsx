@@ -1,16 +1,12 @@
 import { User, Mail, Briefcase, FileText, Save, ShieldAlert, Camera } from "lucide-react";
 import { useState } from "react";
-
+import api from "../api/axios";
 const ProfileForm = ({ initialData, onSuccess }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
-    firstName: initialData?.firstName || "",
-    lastName: initialData?.lastName || "",
-    email: initialData?.email || "",
-    position: initialData?.position || "",
-    bio: initialData?.bio || "",
+    bio: initialData?.bio || ""
   });
 
   const handleSubmit = async (e) => {
@@ -18,13 +14,15 @@ const ProfileForm = ({ initialData, onSuccess }) => {
     setLoading(true);
     setError("");
     setMessage("");
-
-    // Simulate API update
-    setTimeout(() => {
+    try {
+      await api.post("/profile",formData)
+      setMessage("Profile Updated Successfully")
+      onSuccess();
+    } catch (error) {
+      setError(error.message);
+    }finally{
       setLoading(false);
-      setMessage("System log updated: Profile record synchronized successfully.");
-      onSuccess?.();
-    }, 1200);
+    }
   };
 
   return (

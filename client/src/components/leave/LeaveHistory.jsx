@@ -9,17 +9,23 @@ import {
   User,
 } from "lucide-react";
 import { format } from "date-fns";
-
+import api from "../../api/axios.js";
+import toast from "react-hot-toast";
 const LeaveHistory = ({ leaves, isAdmin, onUpdate }) => {
   const [processing, setProcessing] = useState(null)
 
   const handleStatusUpdate = async (id, status) => {
     setProcessing(id)
-    // Simulate API call
-    setTimeout(() => {
-      setProcessing(null)
-      onUpdate()
-    }, 1000)
+
+    try {
+      const res = await api.patch(`/leave/${id}`, { status });
+      toast.success(res.data.message);
+      onUpdate?.();
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Failed to update leave status");
+    } finally {
+      setProcessing(null);
+    }
   }
 
   const getStatusStyle = (status) => {

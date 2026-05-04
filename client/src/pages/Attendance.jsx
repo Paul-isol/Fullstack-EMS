@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react"
-import { dummyAttendanceData } from "../assets/assets"
 import Loading from "../components/Loading"
 import { ArrowUpRight, FileText, Settings2, ShieldCheck } from "lucide-react"
 import CheckinButton from "../components/attendance/CheckinButton"
 import AttendanceStats from "../components/attendance/AttendanceStats"
 import AttendanceHistory from "../components/attendance/AttendanceHistory"
-
+import api from "../api/axios.js"
+import toast from "react-hot-toast"
 const Attendance = () => {
   const [history, setHistory] = useState([])
   const [loading, setLoading] = useState(true)
@@ -14,10 +14,17 @@ const Attendance = () => {
   const fetchData = useCallback(async () => {
     // Simulate API delay
     setLoading(true)
-    setTimeout(() => {
-      setHistory(dummyAttendanceData)
+    try {
+      const response = await api.get("/attendance")
+      setHistory(response.data.data || [])
+      if(response.data.employee?.isDeleted) {
+        setIsDeleted(true)
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Failed to fetch attendance data")
+    } finally{
       setLoading(false)
-    }, 800)
+    }
   }, [])
 
   useEffect(() => {

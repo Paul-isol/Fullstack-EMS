@@ -8,7 +8,7 @@ const AdminDashboard = ({ data }) => {
       label: "Total Employees",
       description: "Active Workforce",
       color: "text-blue-600",
-      bg: "bg-blue-50/50"
+      bg: "bg-blue-50/50",
     },
     {
       icon: Building2Icon,
@@ -16,25 +16,25 @@ const AdminDashboard = ({ data }) => {
       label: "Departments",
       description: "Organization Units",
       color: "text-indigo-600",
-      bg: "bg-indigo-50/50"
+      bg: "bg-indigo-50/50",
     },
     {
       icon: Calendar1Icon,
-      value: data.todayAttendance,
+      value: data.totalAttendance,
       label: "Today's Attendance",
       description: "Checked in today",
       color: "text-emerald-600",
-      bg: "bg-emerald-50/50"
+      bg: "bg-emerald-50/50",
     },
     {
       icon: FileTextIcon,
-      value: data.pendingLeaves,
+      value: data.totalPendingLeaves,
       label: "Pending Leaves",
       description: "Awaiting Approval",
       color: "text-amber-600",
-      bg: "bg-amber-50/50"
-    }
-  ]
+      bg: "bg-amber-50/50",
+    },
+  ];
 
   return (
     <div className="space-y-12 animate-fade-in">

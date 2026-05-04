@@ -1,14 +1,10 @@
 import { X, Calendar, MessageSquare, Tag, Terminal } from "lucide-react";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import api from "../../api/axios.js";
 
 const ApplyLeaveModel = ({ open, onClose, onSuccess }) => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    type: "ANNUAL",
-    startDate: "",
-    endDate: "",
-    reason: "",
-  });
 
   const today = new Date();
   const tomorrow = new Date(today);
@@ -18,12 +14,20 @@ const ApplyLeaveModel = ({ open, onClose, onSuccess }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+     const formData = new FormData(e.target);
+     const data = Object.fromEntries(formData.entries());
+
     // Simulate API call
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      await api.post("/leave",data);
+      toast.success("Leave application submitted successfully");
       onSuccess?.();
       onClose();
-    }, 1200);
+    } catch (error) {
+      toast.error(error.response?.data?.error || "Failed to apply for leave");
+    }finally {
+      setLoading(false);
+    }
   };
 
   if (!open) return null;
@@ -67,9 +71,9 @@ const ApplyLeaveModel = ({ open, onClose, onSuccess }) => {
                 TYPE: Classification
               </label>
               <select
+                name="type"
                 required
-                value={formData.type}
-                onChange={(e) => setFormData({ ...formData, type: e.target.value })}
+                defaultValue="ANNUAL"
                 className="w-full"
               >
                 <option value="ANNUAL">Annual Leave</option>
@@ -90,11 +94,10 @@ const ApplyLeaveModel = ({ open, onClose, onSuccess }) => {
                 DATE: Start
               </label>
               <input
+                name="startDate"
                 type="date"
                 required
                 min={minDate}
-                value={formData.startDate}
-                onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
               />
             </div>
 
@@ -105,11 +108,10 @@ const ApplyLeaveModel = ({ open, onClose, onSuccess }) => {
                 DATE: End
               </label>
               <input
+                name="endDate"
                 type="date"
                 required
-                min={formData.startDate || minDate}
-                value={formData.endDate}
-                onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
+                min={minDate}
               />
             </div>
           </div>
@@ -121,11 +123,10 @@ const ApplyLeaveModel = ({ open, onClose, onSuccess }) => {
               DESC: Justification
             </label>
             <textarea
+              name="reason"
               required
               rows="4"
               placeholder="Provide a technical justification for this request..."
-              value={formData.reason}
-              onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
               className="resize-none"
             />
           </div>

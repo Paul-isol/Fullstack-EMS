@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { dummyPayslipData } from "../assets/assets";
 import Loading from "../components/Loading";
 import { format } from "date-fns";
 import { ShieldCheck, Printer, User, Mail, Briefcase, Calendar, Terminal, DollarSign, FileText } from "lucide-react";
+import api from "../api/axios";
 
 const PrintPaySlip = () => {
   const { id } = useParams();
@@ -11,10 +11,14 @@ const PrintPaySlip = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate data fetch
-    const found = dummyPayslipData.find((slip) => slip._id === id);
-    setPayslip(found);
-    setTimeout(() => setLoading(false), 600);
+    setLoading(true);
+    api.get(`/payslips/${id}`).then((res) => {
+      setPayslip(res.data.data);
+    }).catch((err) => {
+      console.log(err);
+    }).finally(() => {
+      setLoading(false);
+    });
   }, [id]);
 
   if (loading) return <Loading />;

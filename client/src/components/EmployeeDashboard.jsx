@@ -10,25 +10,27 @@ const EmployeeDashboard = ({ data }) => {
       title: "Days Present",
       subTitle: "Current month overview",
       color: "text-indigo-600",
-      bg: "bg-indigo-50/50"
+      bg: "bg-indigo-50/50",
     },
     {
       icon: FileTextIcon,
-      value: data.pendingLeaves,
+      value: data.totalPendingLeaves,
       title: "Pending Leaves",
       subTitle: "Awaiting approval",
       color: "text-amber-600",
-      bg: "bg-amber-50/50"
+      bg: "bg-amber-50/50",
     },
     {
       icon: DollarSignIcon,
-      value: data.latestPayslip ? `$${data.latestPayslip.netSalary?.toLocaleString()}` : "N/A",
+      value: data.latestPayslip
+        ? `$${data.latestPayslip.netSalary?.toLocaleString()}`
+        : "N/A",
       title: "Latest Salary",
       subTitle: "Net payout received",
       color: "text-emerald-600",
-      bg: "bg-emerald-50/50"
-    }
-  ]
+      bg: "bg-emerald-50/50",
+    },
+  ];
 
   return (
     <div className="space-y-12 animate-fade-in">

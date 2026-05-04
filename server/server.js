@@ -19,7 +19,10 @@ const app = express()
 const PORT = process.env.PORT || 8000
 
 // Middleware
-app.use(cors())
+app.use(cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true
+}))
 app.use(express.json())
 app.use(cookieParser())
 app.use(multer().none())
@@ -30,7 +33,7 @@ app.get("/", (req, res) => {
 })
 
 app.use("/api/auth", authRouter);
-app.use("/api/employee", employeeRouter);
+app.use("/api/employees", employeeRouter);
 app.use("/api/profile", profileRouter);
 app.use("/api/attendance", attendanceRouter);
 app.use("/api/leave", leaveAppRouter);
