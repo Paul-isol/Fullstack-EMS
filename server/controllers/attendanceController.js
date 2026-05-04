@@ -75,12 +75,17 @@ export const clockInOut = async (req, res) => {
 export const getAttendanceByUser = async (req, res) => {
     try {
         const session = req.session;
+        const limit = parseInt(req.query.limit || 30);
+
+        if (session.role === "ADMIN") {
+            const history = await Attendance.find().sort({ date: -1 }).limit(limit).populate('employeeId');
+            return res.json({ data: history, employee: { isDeleted: false } });
+        }
+
         const employee = await Employee.findOne({ userId: session.userId });
         if (!employee) {
             return res.status(404).json({ error: "Employee not found" });
         }
-
-        const limit = parseInt(req.query.limit || 30);
 
         const history = await Attendance.find({ employeeId: employee._id }).sort({ date: -1 }).limit(limit);
         return res.json({ data: history, employee: { isDeleted: employee.isDeleted } });
