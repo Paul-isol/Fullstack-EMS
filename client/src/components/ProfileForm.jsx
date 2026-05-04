@@ -6,6 +6,10 @@ const ProfileForm = ({ initialData, onSuccess }) => {
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
   const [formData, setFormData] = useState({
+    firstName: initialData?.firstName || "",
+    lastName: initialData?.lastName || "",
+    email: initialData?.email || "",
+    position: initialData?.position || "",
     bio: initialData?.bio || ""
   });
 
