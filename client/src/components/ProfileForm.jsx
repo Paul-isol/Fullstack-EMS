@@ -19,7 +19,7 @@ const ProfileForm = ({ initialData, onSuccess }) => {
     setError("");
     setMessage("");
     try {
-      await api.post("/profile",formData.bio)
+      await api.post("/profile", { bio: formData.bio });
       setMessage("Profile Updated Successfully")
       onSuccess();
     } catch (error) {
